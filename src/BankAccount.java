@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class BankAccount {
 
     public double balance;
@@ -41,6 +43,16 @@ public class BankAccount {
         }
     }
     public void printBalance(){
-        System.out.println(this.balance);
+        System.out.println(this.balance + "€");
     }
+
+
+
+    public static void printAccounts(ArrayList<BankAccount> accounts) {
+        for (int i = 0; i < accounts.size(); i++) {
+            System.out.print("Account ID " + (i+1) + ": ");
+            accounts.get(i).printBalance();
+        }
+    }
+
 }
