@@ -1,7 +1,8 @@
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
@@ -9,7 +10,6 @@ public class Main {
     public static void main(String[] args) {
 
         BankAccount acc1 = new BankAccount(105);
-
         BankAccount acc2 = new BankAccount(200);
         ArrayList<BankAccount> accounts = new ArrayList<BankAccount>();
         accounts.add(acc1);
@@ -71,27 +71,25 @@ public class Main {
                     selection = myObj.nextLine();
                     System.out.println("Select to which account you want to send funds:");
                     selection1 = myObj.nextLine();
-                    if (checkId(selection, accounts) && checkId(selection1,accounts)) {
+                    if (checkId(selection, accounts) && checkId(selection1, accounts)) {
                         int index1 = Integer.parseInt(selection) - 1;
                         int index2 = Integer.parseInt(selection1) - 1;
                         System.out.println("Input amount you want to transfer.");
                         amount = myObj.nextLine();
-                        BankAccount.transferFunds(accounts.get(index1),accounts.get(index2),Double.parseDouble(amount));
-                    }
-                    else {
+                        BankAccount.transferFunds(accounts.get(index1), accounts.get(index2), Double.parseDouble(amount));
+                    } else {
                         break;
                     }
                     break;
                 case "3":
-                   try (FileWriter writer = new FileWriter(fileName)){
-                       for (int i = 0; i < accounts.size(); i++) {
-                           writer.write("Account ID " + (i+1) + ": " + accounts.get(i).balance + "€\n");
-                       }
-                       System.out.println("File written successfully!");
-                   }
-                   catch (IOException e){
-                       System.out.println("An error occurred while writing to the file.");
-                   }
+                    try (FileWriter writer = new FileWriter(fileName)) {
+                        for (int i = 0; i < accounts.size(); i++) {
+                            writer.write("Account ID " + (i + 1) + ": " + accounts.get(i).balance + "€\n");
+                        }
+                        System.out.println("File written successfully!");
+                    } catch (IOException e) {
+                        System.out.println("An error occurred while writing to the file.");
+                    }
                 default:
                     System.out.println("Have a nice day!");
                     return;
