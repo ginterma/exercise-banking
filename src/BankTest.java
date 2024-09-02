@@ -10,6 +10,7 @@ public class BankTest {
     @DisplayName("Tests deposit method")
     void deposit() {
         BankAccount acc = new BankAccount(500);
+        acc.deposit(-70000000);
         acc.deposit(200);
         assertEquals(700, acc.balance);
     }
