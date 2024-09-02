@@ -1,5 +1,8 @@
+package org.example;
+
+
+import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +11,7 @@ public class BankTest {
 
     @Test
     @DisplayName("Tests deposit method")
-    void deposit() {
+    public void  deposit() {
         BankAccount acc = new BankAccount(500);
         acc.deposit(-70000000);
         acc.deposit(200);
@@ -17,7 +20,7 @@ public class BankTest {
 
     @Test
     @DisplayName("Tests withdraw method")
-    void withdraw() {
+    public void withdraw() {
 
         BankAccount acc = new BankAccount(275);
         acc.withdraw(200);
@@ -35,7 +38,7 @@ public class BankTest {
 
     @Test
     @DisplayName("Test transfer funds method between two accounts")
-    void transferFunds(){
+    public void transferFunds(){
         BankAccount acc1 = new BankAccount(50);
         BankAccount acc2 = new BankAccount(770);
         BankAccount.transferFunds(acc1,acc2,70);
