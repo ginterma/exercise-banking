@@ -53,7 +53,7 @@ public class BankAccount {
     sequenceName = "account_sequence",
     allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-    generator = "student_sequence")
+    generator = "account_sequence")
     private Long id;
     public BankAccount() {
         balance = 0;

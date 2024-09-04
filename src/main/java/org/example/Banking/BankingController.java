@@ -1,6 +1,9 @@
 package org.example.Banking;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "Banking")
@@ -13,9 +16,9 @@ public class BankingController {
         this.bankingService = bankingService;
     }
 
-    @GetMapping
-    public int Show() {
-        return 4;
+    @GetMapping()
+    public List<BankAccount> showAccounts() {
+        return bankingService.showAccounts();
     }
 
     @PostMapping
@@ -37,8 +40,8 @@ public class BankingController {
 
     @PutMapping(path = "{bankingId}/balance")
     public void updateBalance(@PathVariable("bankingId") Long id,
-                           @RequestParam(required = true) String action,
-                           @RequestParam(required = true) Double amount)
+                              @RequestParam(required = true) String action,
+                              @RequestParam(required = true) Double amount)
     {
         bankingService.updateBalance(id, amount, action);
 

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banking Application</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 50px;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: space-between;
+    }
+    .section {
+        max-width: 300px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-right: 20px;
+    }
+    h2 {
+        text-align: center;
+    }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="text"], input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .add-account-btn {
+        background-color: #008CBA;
+        color: white;
+    }
+    .deposit-btn {
+        background-color: #4CAF50;
+        color: white;
+    }
+    .withdraw-btn {
+        background-color: #f44336;
+        color: white;
+    }
+    .client-list {
+        max-width: 300px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        max-height: 400px;
+    }
+    .client-item {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+    .client-item:last-child {
+        border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="section">
+  <h2>Add Account</h2>
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" placeholder="Enter your name">
+
+  <label for="initial-amount">Initial Amount</label>
+  <input type="number" id="initial-amount" name="initial-amount" placeholder="Enter initial amount">
+
+  <button class="add-account-btn" onclick="addAccount()">Add Account</button>
+</div>
+
+<div class="section">
+  <h2>Banking Application</h2>
+
+  <label for="account-id">Bank Account ID</label>
+  <input type="text" id="account-id" name="account-id" placeholder="Enter your bank account ID">
+
+  <label for="amount">Amount</label>
+  <input type="number" id="amount" name="amount" placeholder="Enter amount">
+
+  <div class="btn-group">
+    <button class="deposit-btn" onclick="updateBalance('deposit')">Deposit</button>
+    <button class="withdraw-btn" onclick="updateBalance('withdraw')">Withdraw</button>
+  </div>
+</div>
+
+<div class="client-list" id="client-list">
+  <h2>Clients</h2>
+  <!-- Client list will be populated here -->
+</div>
+
+<script>
+  function addAccount() {
+      const name = document.getElementById('name').value;
+      const initialAmount = document.getElementById('initial-amount').value;
+
+      fetch('/Banking', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: name, balance: initialAmount }),
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          loadClients();  // Refresh the client list after adding a new account
+      })
+      .catch(error => {
+          console.error('Error adding account:', error);
+          alert('There was an error adding the account');
+      });
+  }
+
+  function updateBalance(action) {
+      const accountId = document.getElementById('account-id').value;
+      const amount = document.getElementById('amount').value;
+
+      fetch(`/Banking/${accountId}/balance?action=${action}&amount=${amount}`, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          loadClients();  // Refresh the client list after updating the balance
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('There was an error processing your request');
+      });
+  }
+
+  function loadClients() {
+      fetch('/Banking')
+          .then(response => response.json())
+          .then(data => {
+              const clientList = document.getElementById('client-list');
+              clientList.innerHTML = '<h2>Clients</h2>';
+              data.forEach(client => {
+                  const clientItem = document.createElement('div');
+                  clientItem.className = 'client-item';
+                  clientItem.innerHTML = `<strong>ID:</strong> ${client.id} <br> <strong>Name:</strong> ${client.name} <br> <strong>Balance:</strong> €${client.balance}`;
+                  clientList.appendChild(clientItem);
+              });
+          })
+          .catch(error => {
+              console.error('Error fetching client data:', error);
+          });
+  }
+
+  // Load clients when the page loads
+  window.onload = loadClients;
+</script>
+
+</body>
+</html>
